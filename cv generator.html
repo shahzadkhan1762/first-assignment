@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Creator with Image Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f5f5f5;
+        }
+        #cv-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        h2, h3, p {
+            margin-top: 20px;
+        }
+        img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>CV Creator with Image Upload</h1>
+    <div id="cv-container">
+        <label for="name">Name:</label>
+        <input type="text" id="name" placeholder="Your Name">
+
+        <label for="email">Email:</label>
+        <input type="text" id="email" placeholder="Your Email">
+
+        <label for="image">Image Upload:</label>
+        <input type="file" id="image" accept="image/*">
+
+        <label for="education">Education:</label>
+        <textarea id="education" placeholder="Your Education"></textarea>
+
+        <label for="experience">Work Experience:</label>
+        <textarea id="experience" placeholder="Your Work Experience"></textarea>
+
+        <label for="achievements">Achievements:</label>
+        <textarea id="achievements" placeholder="Your Achievements"></textarea>
+
+        <button onclick="generateCV()">Generate CV</button>
+        <button onclick="downloadCV()">Download PDF</button>
+
+        <div id="generated-cv"></div>
+    </div>
+
+    <script src="https://rawgit.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+    <script>
+        function generateCV() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const education = document.getElementById('education').value;
+            const experience = document.getElementById('experience').value;
+            const achievements = document.getElementById('achievements').value;
+
+            const generatedCV = `
+                <h2>${name}</h2>
+                <img src="${image}" alt="${name}'s Image">
+                <p>Email: ${email}</p>
+                <h3>Education</h3>
+                <p>${education}</p>
+                <h3>Work Experience</h3>
+                <p>${experience}</p>
+                <h3>Achievements</h3>
+                <p>${achievements}</p>
+            `;
+
+            document.getElementById('generated-cv').innerHTML = generatedCV;
+        }
+
+        function downloadCV() {
+            const cvContainer = document.getElementById('cv-container');
+            const options = { margin: 10, filename: 'professional_cv.pdf', image: { type: 'jpeg', quality: 0.98 } };
+
+            html2pdf().from(cvContainer).set(options).outputPdf();
+        }
+    </script>
+</body>
+</html>
